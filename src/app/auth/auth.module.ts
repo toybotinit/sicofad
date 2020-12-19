@@ -9,6 +9,8 @@ import {
   NbAlertModule,
   NbButtonModule,
   NbCheckboxModule,
+  NbFormFieldModule,
+  NbIconModule,
   NbInputModule
 } from '@nebular/theme';
 
@@ -24,7 +26,8 @@ import {SifoCadLoginComponent} from './login/login.component';
     NbButtonModule,
     NbCheckboxModule,
     SifoCadAuthRoutingModule,
-
+    NbIconModule,
+    NbFormFieldModule,
     NbAuthModule,
   ],
   declarations: [

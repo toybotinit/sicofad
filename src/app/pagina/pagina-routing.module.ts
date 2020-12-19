@@ -3,28 +3,32 @@ import { RouterModule, Routes } from '@angular/router';
 
 import {NbAuthComponent} from '@nebular/auth';
 import { InicioComponent } from '../pagina/inicio/inicio.component';
-import { SifoCadLoginComponent } from './login/login.component';
+import { DelegadosComponent } from './formatos/delegados/delegados.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: NbAuthComponent,
+    component: InicioComponent,
     children: [
-        {
-            path: 'login',
-            component:  SifoCadLoginComponent,
-        },
-        
+      {
+        path: 'Formatos',
+        children: [
+          {
+            path: 'delegados',
+            component: DelegadosComponent,
+          }
+      ]
+      },
+      
     ]
-  }
-
+ 
+  },
   
-
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class SifoCadAuthRoutingModule {
+export class PaginaRoutingModule {
 }

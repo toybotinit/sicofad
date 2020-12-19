@@ -1,15 +1,15 @@
 <h1 id="title" class="title">Iniciar Sesi&oacute;n</h1>
-<p class="sub-title">Bienvenido! Inicie Sesi&oacute;n con su correo</p>
+<p class="sub-title">Bienvenido! Inicie Sesi&oacute;n en SICOFAD con su correo</p>
 
 <nb-alert *ngIf="showMessages.error && errors?.length && !submitted" outline="danger" role="alert">
-  <p class="alert-title"><b>Oh snap!</b></p>
+  <p class="alert-title"><b>Algo salió mal!</b></p>
   <ul class="alert-message-list">
     <li *ngFor="let error of errors" class="alert-message">{{ error }}</li>
   </ul>
 </nb-alert>
 
 <nb-alert *ngIf="showMessages.success && messages?.length && !submitted" outline="success" role="alert">
-  <p class="alert-title"><b>Hooray!</b></p>
+  <p class="alert-title"><b>Muy bien!</b></p>
   <ul class="alert-message-list">
     <li *ngFor="let message of messages" class="alert-message">{{ message }}</li>
   </ul>
@@ -47,20 +47,30 @@
       <label class="label" for="input-password">Contraseña:</label>
       <a class="forgot-password caption-2" routerLink="../request-password">Olvidó la contraseña?</a>
     </span>
-    <input nbInput
-           fullWidth
-           [(ngModel)]="user.password"
-           #password="ngModel"
-           name="password"
-           type="password"
-           id="input-password"
-           placeholder="Contraseña"
-           fieldSize="large"
-           [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : 'basic'"
-           [required]="getConfigValue('forms.validation.password.required')"
-           [minlength]="getConfigValue('forms.validation.password.minLength')"
-           [maxlength]="getConfigValue('forms.validation.password.maxLength')"
-           [attr.aria-invalid]="password.invalid && password.touched ? true : null">
+    <nb-form-field>
+      <input nbInput
+      [type]="getInputType()"
+      fullWidth
+      [(ngModel)]="user.password"
+      #password="ngModel"
+      name="password"
+      type="password"
+      id="input-password"
+      placeholder="Contraseña"
+      fieldSize="large"
+      [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : 'basic'"
+      [required]="getConfigValue('forms.validation.password.required')"
+      [minlength]="getConfigValue('forms.validation.password.minLength')"
+      [maxlength]="getConfigValue('forms.validation.password.maxLength')"
+      [attr.aria-invalid]="password.invalid && password.touched ? true : null">
+      <button nbSuffix nbButton ghost (click)="toggleShowPassword()" type="button">
+       <nb-icon [icon]="showPassword ? 'eye-outline' : 'eye-off-2-outline'"
+                pack="eva"
+                [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
+       </nb-icon>
+     </button>
+    </nb-form-field>
+    
     <ng-container *ngIf="password.invalid && password.touched ">
       <p class="caption status-danger" *ngIf="password.errors?.required">
         La contraseña es requerida!
@@ -89,7 +99,7 @@
 </form>
 
 <section *ngIf="socialLinks && socialLinks.length > 0" class="links" aria-label="Social sign in">
-  or enter with:
+  o Inicie sesión con:
   <div class="socials">
     <ng-container *ngFor="let socialLink of socialLinks">
       <a *ngIf="socialLink.link"
