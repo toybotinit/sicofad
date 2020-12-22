@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 
 import { HttpClientModule } from '@angular/common/http';
 import { NbPasswordAuthStrategy, NbAuthModule, NbAuthJWTToken } from '@nebular/auth';
@@ -11,6 +11,8 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { AppRoutingModule } from './app-routing.module';
 import {SifoCadAuthModule} from './auth/auth.module';
 import {PaginaModule} from './pagina/pagina.module';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { Ng2CompleterModule } from 'ng2-completer';
 const formSetting: any = {
   redirectDelay: 0,
   showMessage: {
@@ -33,6 +35,8 @@ const formSetting: any = {
     HttpClientModule,
     SifoCadAuthModule,
     PaginaModule,
+    Ng2SmartTableModule,
+    Ng2CompleterModule,
     NbMenuModule.forRoot(),
     NbSidebarModule.forRoot(),
     NbAuthModule.forRoot({
@@ -65,7 +69,7 @@ const formSetting: any = {
       },
     }),
   ],
-  providers: [],
+  providers: [{provide: LOCALE_ID, useValue: "es-PE" }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

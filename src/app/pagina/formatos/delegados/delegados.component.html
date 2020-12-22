@@ -1,17 +1,69 @@
+
 <nb-card>
   <nb-card-body>
 
     <nb-tabset>
       <nb-tab tabTitle="Delegados" tabIcon="person-outline" responsive>
-        <p>Lista de <strong>delegados</strong>.</p>
+        <div>
+              <ng2-smart-table [settings]="settings" [source]="source">
+              </ng2-smart-table>
+        </div>
       </nb-tab>
-      <nb-tab tabTitle="Nuevo" tabIcon="person-add-outline" responsive>
-        
+      <nb-tab tabTitle="Formato" tabIcon="file-text-outline" responsive>
+        <form action="" >
+          <nb-card>
+            <nb-card-header>Datos del curso</nb-card-header>
+
+            <div class="form-control-group">
+              <label for="codigoCurso" class="label">Codigo</label>
+              <input nbInput medium class="form-control" 
+              type="number" 
+              name="codigoCurso"
+              id="codigoCurso"  
+              placeholder="Codigo del curso" 
+              [status]="codigoCurso.dirty ? (codigoCurso.invalid  ? 'danger' : 'success') : 'basic'"
+              [attr.aria-invalid]="codigoCurso.invalid && codigoCurso.touched ? true : null">
+              <ng-container *ngIf="codigoCurso.invalid && codigoCurso.touched">
+                <p class="caption status-danger" *ngIf="codigoCurso.errors?.required">
+                  El codigo es necesario
+                </p>
+                  <p class="caption status-danger" *ngIf="codigoCurso.errors?.minlength">
+                  Es un codigo de 7 digitos
+                  </p>
+                  <p class="caption status-danger" *ngIf="codigoCurso.errors?.maxlength">
+                    Es un codigo de 7 digitos
+                  </p>
+              </ng-container>       
+            </div>
+
+            <div class="form-group">
+              <label for="nombreCurso" class="label">Nombre</label>
+              <input class="form-control" type="text" nbInput medium id="nombreCurso"  placeholder="Nombre del curso" [ngClass]="{'is-invalid': !nombreCurso.valid}">
+              <ng-container *ngIf="nombreCurso.invalid && nombreCurso.touched">
+                <p class="caption status-danger" *ngIf="nombreCurso.errors?.required" class="invalid-feedback">
+                  El codigo es necesario
+                </p>
+                  <p class="caption status-danger" *ngIf="nombreCurso.errors?.minlength" class="invalid-feedback">
+                  Es un codigo de 7 digitos
+                  </p>
+                  <p class="caption status-danger" *ngIf="nombreCurso.errors?.maxlength" class="invalid-feedback">
+                    Es un codigo de 7 digitos
+                  </p>
+              </ng-container> 
+            </div>
+            <div class="form-group">
+
+            </div>
+          </nb-card>
+            
+        </form>
       </nb-tab>
-      <nb-tab tabTitle="SubDelegados" tabIcon="email-outline" responsive>
-        <p>Lista de <strong>subdelegados</strong>.</p>
+      <nb-tab tabTitle="Subdelegados" tabIcon="people-outline" responsive>
+        <p>lista de <strong>subdelegados</strong>.</p>
       </nb-tab>
     </nb-tabset>
 
   </nb-card-body>
 </nb-card>
+
+

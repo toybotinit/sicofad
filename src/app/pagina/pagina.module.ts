@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { InicioComponent } from './inicio/inicio.component';
@@ -8,6 +8,8 @@ import { FooterComponent } from './footer/footer.component';
 import { DelegadosComponent } from './formatos/delegados/delegados.component';
 import { SilabosComponent } from './formatos/silabos/silabos.component';
 import { BienvenidaComponent } from './bienvenida/bienvenida.component';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { Ng2CompleterModule } from 'ng2-completer';
 
 @NgModule({
   declarations: [HeaderComponent, InicioComponent, FooterComponent, DelegadosComponent, SilabosComponent, BienvenidaComponent, ],
@@ -24,6 +26,8 @@ import { BienvenidaComponent } from './bienvenida/bienvenida.component';
     NbTreeGridModule,
     NbInputModule,
     NbTabsetModule,
-  ]
+    Ng2SmartTableModule,
+    Ng2CompleterModule,
+  ],
 })
 export class PaginaModule { }
