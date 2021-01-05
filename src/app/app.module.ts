@@ -22,10 +22,11 @@ const formSetting: any = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     NbThemeModule.forRoot({ name: 'corporate' }),
     NbLayoutModule,
@@ -69,7 +70,7 @@ const formSetting: any = {
       },
     }),
   ],
-  providers: [{provide: LOCALE_ID, useValue: "es-PE" }],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

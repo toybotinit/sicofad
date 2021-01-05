@@ -21,6 +21,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
 
   },
   {
+    title: 'Profesores',
+    icon: 'people-outline',
+    link: '/Inicio/Profesores',
+  },
+  {
     title: 'Cursos',
     icon: 'book-open-outline',
     link: '/Inicio/Cursos',

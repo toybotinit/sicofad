@@ -4,6 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import {NbAuthComponent} from '@nebular/auth';
 import { InicioComponent } from '../pagina/inicio/inicio.component';
 import { DelegadosComponent } from './formatos/delegados/delegados.component';
+import { InformeFinDeCicloComponent } from './formatos/informe-fin-de-ciclo/informe-fin-de-ciclo.component';
+import { ProfesoresComponent } from './profesores/profesores.component';
 
 export const routes: Routes = [
   {
@@ -16,8 +18,16 @@ export const routes: Routes = [
           {
             path: 'delegados',
             component: DelegadosComponent,
-          }
+          },
+          {
+            path: 'informes',
+            component: InformeFinDeCicloComponent,
+          },
       ]
+      },
+      {
+        path: 'Profesores',
+        component: ProfesoresComponent,
       },
       
     ]

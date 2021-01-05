@@ -10,5 +10,5 @@ if (environment.production) {
 }
 
 platformBrowserDynamic().bootstrapModule(AppModule , {
-  providers: [{provide: LOCALE_ID, useValue: 'es-PE' }]
+  providers: []
 }).catch(err => console.error(err));

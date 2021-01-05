@@ -1,0 +1,80 @@
+<nb-card>
+    <nb-card-body>
+        <nb-tabset>
+            <nb-tab tabTitle="Profesores" tabIcon="people-outline" responsive>
+
+            </nb-tab>
+            <nb-tab tabTitle="Profesor" tabIcon="person-outline" responsive>
+                <form (ngSubmit)="onSubmit()" [formGroup]="ProfesorForm">
+                    <nb-card>
+                        <nb-card-header>Profesor</nb-card-header>
+                        <nb-card-body>
+                            <div class="form-control-group">
+                                <label for="nombre" class="label col-12">Nombre:</label>
+                                    <input type="text" nbInput medium 
+                                    id="nombre" 
+                                    name="nombre"
+                                    formControlName="nombre"
+                                    placeholder="Nombre del profesor"
+                                    [status]="nombre.dirty ? (nombre.invalid ? 'danger' : 'success') : 'basic'"
+                                    [attr.aria-invalid]="nombre.invalid && nombre.touched ? true : null"
+                                    autofocus="true">
+                                    <ng-container *ngIf="nombre.invalid && nombre.touched">
+                                        <p class="caption status-danger" *ngIf="nombre.errors?.required">
+                                          El nombre del profesor es necesario
+                                        </p>
+                                    </ng-container>
+                            </div> 
+                            <div class="form-control-group">
+                                <label for="usuario" class="label col-12">Usuario:</label>
+                                    <input type="email" nbInput medium 
+                                    id="usuario" 
+                                    name="usuario"
+                                    formControlName="usuario"
+                                    placeholder="Usuario del profesor"
+                                    [status]="usuario.dirty ? (usuario.invalid ? 'danger' : 'success') : 'basic'"
+                                    [attr.aria-invalid]="usuario.invalid && usuario.touched ? true : null"
+                                    autofocus="true">
+                                    <ng-container *ngIf="usuario.invalid && usuario.touched">
+                                        <p class="caption status-danger" *ngIf="usuario.errors?.required">
+                                          El usuario del profesor es necesario
+                                        </p>
+                                        <p class="caption status-danger" *ngIf="usuario.errors?.email">
+                                           debe ser un email
+                                          </p>
+                                    </ng-container>
+                            </div> 
+                            <div class="form-control-group">
+                                <label for="password" class="label col-12">Contraseña:</label>
+                                    <input type="password" nbInput medium 
+                                    id="password" 
+                                    name="password"
+                                    formControlName="password"
+                                    placeholder="Contraseña del profesor"
+                                    [status]="password.dirty ? (password.invalid ? 'danger' : 'success') : 'basic'"
+                                    [attr.aria-invalid]="password.invalid && password.touched ? true : null"
+                                    autofocus="true">
+                                    <ng-container *ngIf="password.invalid && password.touched">
+                                        <p class="caption status-danger" *ngIf="password.errors?.required">
+                                          La contraseña del profesor es necesario
+                                        </p>
+                                    </ng-container>
+                            </div> 
+                        </nb-card-body>
+                    </nb-card>
+                    <nb-card>
+                        <nb-card-body>
+                            <div class="row justify-content-around">
+                                <div class="col-12">
+                                    <button nbButton status="primary" size="medium" type="submit" [disabled]="!ProfesorForm.valid">
+                                    Guardar
+                                    </button>
+                                </div>
+                            </div>
+                        </nb-card-body>
+                    </nb-card>
+                </form>
+            </nb-tab>
+        </nb-tabset>
+    </nb-card-body>
+</nb-card>
