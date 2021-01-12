@@ -12,10 +12,10 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { Ng2CompleterModule } from 'ng2-completer';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InformeFinDeCicloComponent } from './formatos/informe-fin-de-ciclo/informe-fin-de-ciclo.component';
-import { ProfesoresComponent } from './profesores/profesores.component';
+import { UsuariosComponent } from './usuarios/usuarios.component';
 
 @NgModule({
-  declarations: [HeaderComponent, InicioComponent, FooterComponent, DelegadosComponent, SilabosComponent, BienvenidaComponent, InformeFinDeCicloComponent, ProfesoresComponent,],
+  declarations: [HeaderComponent, InicioComponent, FooterComponent, DelegadosComponent, SilabosComponent, BienvenidaComponent, InformeFinDeCicloComponent, UsuariosComponent,],
   imports: [
     CommonModule,
     NbUserModule,

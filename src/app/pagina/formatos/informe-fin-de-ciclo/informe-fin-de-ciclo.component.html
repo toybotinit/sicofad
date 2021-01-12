@@ -1,6 +1,6 @@
 <nb-card>
     <nb-card-body>
-        <nb-tabset>
+        <nb-tabset fullWidth (changeTab)="changeTab()">
             <nb-tab tabTitle="Informes" tabIcon="folder-outline" responsive>
                 <div>
                     <ng2-smart-table [settings]="settings" [source]="source">
@@ -70,7 +70,7 @@
 
                                     <div class="form-control-group mt-3">
                                         <label for="tipo" class="label col-12">Tipo (Marcar recuadro)</label>
-                                        <nb-select multiple placeholder="Tipo" formControlName="tipo">
+                                        <nb-select multiple placeholder="Tipo" [formControl]="tipo">
                                             <nb-option value="Teoria">Teoría</nb-option>
                                             <nb-option value="Practica">Práctica</nb-option>
                                             <nb-option value="Laboratorio">Laboratorio</nb-option>

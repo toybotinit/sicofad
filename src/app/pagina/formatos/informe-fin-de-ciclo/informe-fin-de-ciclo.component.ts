@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LocalDataSource } from 'ng2-smart-table';
-import { Formato2 } from 'src/app/shared/formato2';
+import { Formato5Service } from 'src/app/services/formato5.service';
+import { Formato5 } from 'src/app/shared/Formato5';
 
 @Component({
   selector: 'app-informe-fin-de-ciclo',
@@ -12,10 +13,10 @@ export class InformeFinDeCicloComponent implements OnInit {
 
   Formato5Form: FormGroup;
   fechaActual: number = Date.now();
-  formato5: Formato2;
-
+  formato5: Formato5[];
+  formato5table = new Array();
   source: LocalDataSource;
-
+  nuevoFormato: boolean;
   today: number = Date.now();
   settings = {
     actions: {
@@ -31,31 +32,31 @@ export class InformeFinDeCicloComponent implements OnInit {
         editable: false,
         addable: false,
       },
-      Curso: {
+      curso: {
         title: 'Curso',
         type: 'string',
         editable: false,
         addable: false,
       },
-      Grupo: {
+      grupo: {
         title: 'Grupo',
         type: 'string',
         editable: false,
         addable: false,
       },
-      Tipo: {
+      tipo: {
         title: 'Tipo',
         type: 'string',
         editable: false,
         addable: false,
       },
-      Docente: {
+      docente: {
         title: 'Docente',
         type: 'number',
         editable: false,
         addable: false,
       },
-      Fecha: {
+      fecha: {
         title: 'Fecha',
         type: 'string',
         editable: false,
@@ -65,7 +66,7 @@ export class InformeFinDeCicloComponent implements OnInit {
 
     noDataMessage: 'No se encontraron datos',
   };
-  constructor() { }
+  constructor(private formato5Service: Formato5Service) { }
   ngOnInit(): void {
     this.Formato5Form = new FormGroup({
       codigoCurso: new FormControl('', [
@@ -125,17 +126,17 @@ export class InformeFinDeCicloComponent implements OnInit {
       ausentes: new FormControl(' ', [
         Validators.required,
       ]),
-      notaAlta: new FormControl( [
+      notaAlta: new FormControl('', [
         Validators.required,
         Validators.max(20),
         Validators.min(0),
       ]),
-      notaBaja: new FormControl( [
+      notaBaja: new FormControl('', [
         Validators.required,
         Validators.max(20),
         Validators.min(0),
       ]),
-      notaPromedio: new FormControl([
+      notaPromedio: new FormControl('',[
         Validators.required,
         Validators.max(20),
         Validators.min(0),
@@ -151,17 +152,186 @@ export class InformeFinDeCicloComponent implements OnInit {
       actualizacionDocente: new FormControl(),
       comentariosYrecomendaciones: new FormControl(),
      });
+
+     var formato;
+     var tipo="";
+    this.formato5Service.getFormato5s()
+      .subscribe((formatos5) => {
+        this.formato5 = formatos5;
+        console.log(formatos5)
+        console.log(this.formato5)
+        this.formato5.forEach((format5) => {
+          if(format5.tipo.teoria){
+            tipo += "teoria";
+            if(format5.tipo.practica){
+              tipo += ", practica";
+              if(format5.tipo.laboratorio)
+                tipo += ", laboratorio";
+            }
+            else{
+              if(format5.tipo.laboratorio)
+                tipo += ", laboratorio";
+            }
+          }
+          else {
+            if(format5.tipo.practica){
+              tipo += "practica";
+              if(format5.tipo.laboratorio)
+                tipo += ", laboratorio";
+            }
+            else{
+              if(format5.tipo.laboratorio)
+                tipo += "laboratorio";
+            }
+          }
+          console.log(tipo);
+          formato = new Object({
+            "codigo": format5.cod_curso,
+            "curso": format5.nom_curso,
+            "grupo": format5.num_grupo,
+            "tipo": tipo,
+            "docente": format5.nom_docente,
+            "fecha": format5.fecha,
+          });
+          this.formato5table.push(formato);
+          tipo = "";
+        });
+        this.source = new LocalDataSource(this.formato5table);
+      });
   }
 
   onSubmit():void{
-    
+
+    this.Formato5Form.get('tipo').value;
+    var tipo = {
+      "teoria": this.Formato5Form.get('tipo').value[0] == "Teoria" ? true: false,
+      "practica" :  this.Formato5Form.get('tipo').value[1]== "Practica" ? true: false,
+      "laboratorio" :  this.Formato5Form.get('tipo').value[2]== "Laboratorio" ? true: false,
+    }
+    var formato:Formato5 ={
+      "cod_curso": this.Formato5Form.get('codigoCurso').value,
+      "nom_curso": this.Formato5Form.get('nombreCurso').value,
+      "num_grupo": this.Formato5Form.get('grupo').value,
+      "tipo": tipo,
+      "nom_docente": this.Formato5Form.get('nombreDocente').value,
+      "email_docente": this.Formato5Form.get('emailDocente').value,
+      "num_docente": this.Formato5Form.get('numeroDocente').value,
+      "del_curso": {
+        "porcentaje_silabo": this.Formato5Form.get('porcentajeSilabo').value,
+        "practicas": this.Formato5Form.get('practicas').value,
+        "experiencias_laboratorio": this.Formato5Form.get('experienciasLaboratorio').value,
+        "proyectos_investigacion": this.Formato5Form.get('proyectosInvestigacion').value,
+        "matriculados": this.Formato5Form.get('matriculados').value,
+        "aprobados": this.Formato5Form.get('aprobados').value,
+        "desaprobados": this.Formato5Form.get('desaprobados').value, 
+        "ausentes": this.Formato5Form.get('ausentes').value,
+        "nota_alta": this.Formato5Form.get('notaAlta').value,
+        "nota_baja": this.Formato5Form.get('notaBaja').value,
+        "nota_promedio": this.Formato5Form.get('notaPromedio').value,
+      },
+      "observaciones": {
+        "nivel": this.Formato5Form.get('nivel').value,
+        "asistencia": this.Formato5Form.get('asistencia').value,
+        "silabo": this.Formato5Form.get('silabo').value,
+        "aula_virtual": this.Formato5Form.get('aulaVirtual').value,
+        "administrativas": this.Formato5Form.get('administrativas').value,
+        "silabo_competencias": this.Formato5Form.get('silaboCompetencias').value,
+        "mejora_continua": this.Formato5Form.get('mejoraContinua').value,
+        "investigacion_formativa": this.Formato5Form.get('investigacionFormativa').value,
+        "actualizacion_docente": this.Formato5Form.get('actualizacionDocente').value,
+        "comentarios_recomendaciones": this.Formato5Form.get('comentariosYrecomendaciones').value,
+
+      },
+      "fecha": this.fechaActual.toString(),
+    };
+    var tip= "";
+    this.formato5Service.create(formato).subscribe(
+      (formato5) => {
+        if(formato5.tipo.teoria){
+          tip += "teoria";
+          if(formato5.tipo.practica){
+            tip += ", practica";
+            if(formato5.tipo.laboratorio)
+              tip += ", laboratorio";
+          }
+          else{
+            if(formato5.tipo.laboratorio)
+              tip += ", laboratorio";
+          }
+        }
+        else {
+          if(formato5.tipo.practica ){
+            tip += "practica";
+            if(formato5.tipo.laboratorio)
+              tip += ", laboratorio";
+          }
+          else{
+            if(formato5.tipo.laboratorio)
+              tip += "laboratorio";
+          }
+        }
+        console.log(formato)
+        var formato = new Object({
+          "codigo": formato.cod_curso,
+          "curso": formato.nom_curso,
+          "grupo": formato.num_grupo,
+          "tipo": tip,
+          "docente": formato.nom_docente,
+          "fecha": formato.fecha,
+        });
+        this.formato5table.push(formato);
+        this.source.add(formato);
+        this.nuevoFormato=true;
+      }); 
   }
-  options = [
-    { value: 'Básico', label: 'Básico' },
-    { value: 'Medio', label: 'Medio'},
-    { value: 'Alto', label: 'Alto' },
-    { value: 'Avanzado', label: 'Avanzado'},
-  ];
+
+  changeTab():void {
+    var formato;
+    var tipo = "";
+    var formato5t = new Array();
+    this.formato5Service.getFormato5s().subscribe(
+      (formatos) => {
+         formatos.forEach((format5) => {
+          if(format5.tipo.teoria){
+            tipo += "teoria";
+            if(format5.tipo.practica){
+              tipo += ", practica";
+              if(format5.tipo.laboratorio)
+                tipo += ", laboratorio";
+            }
+            else{
+              if(format5.tipo.laboratorio)
+                tipo += ", laboratorio";
+            }
+          }
+          else {
+            if(format5.tipo.practica){
+              tipo += "practica";
+              if(format5.tipo.laboratorio)
+                tipo += ", laboratorio";
+            }
+            else{
+              if(format5.tipo.laboratorio)
+                tipo += "laboratorio";
+            }
+          }
+          formato = new Object({
+            "codigo": format5.cod_curso,
+            "curso": format5.nom_curso,
+            "grupo": format5.num_grupo,
+            "tipo": tipo,
+            "docente": format5.nom_docente,
+            "fecha": format5.fecha,
+          });
+          formato5t.push(formato);
+          console.log(tipo)
+          tipo = "";
+          console.log(tipo)
+        });
+        this.source.load(formato5t);
+      });
+      this.nuevoFormato = false;
+  }
 
   get codigoCurso() { return this.Formato5Form.get('codigoCurso');}
   get nombreCurso() { return this.Formato5Form.get('nombreCurso');}
