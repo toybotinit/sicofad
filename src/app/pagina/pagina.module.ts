@@ -2,7 +2,7 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { InicioComponent } from './inicio/inicio.component';
-import { NbActionsModule, NbButtonModule, NbCardModule, NbIconModule, NbInputModule, NbLayoutModule, NbMenuModule, NbProgressBarModule, NbRadioModule, NbSelectModule, NbSidebarModule, NbTabsetModule, NbTreeGridModule, NbUserModule } from '@nebular/theme';
+import { NbActionsModule, NbButtonModule, NbCardModule, NbIconModule, NbInputModule, NbLayoutModule, NbMenuModule, NbProgressBarModule, NbRadioModule, NbSelectModule, NbSidebarModule, NbSpinnerModule, NbTabsetModule, NbTreeGridModule, NbUserModule } from '@nebular/theme';
 import { PaginaRoutingModule } from './pagina-routing.module';
 import { FooterComponent } from './footer/footer.component';
 import { DelegadosComponent } from './formatos/delegados/delegados.component';
@@ -36,6 +36,7 @@ import { ProfesoresComponent } from './profesores/profesores.component';
     NbSelectModule,
     NbProgressBarModule,
     NbRadioModule,
+    NbSpinnerModule,
   ],
 })
 export class PaginaModule { }

@@ -1,22 +1,22 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Delegado } from '../shared/delegado';
+import { DELEGADOS } from '../shared/delegados';
+import { catchError, delay } from 'rxjs/operators'; 
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { Formato2 } from '../shared/Formato2';
 
 @Injectable({
   providedIn: 'root'
 })
-export class Formato2Service {
-  private urlEndPoint: string = 'http://localhost:3000/formato/2';
+export class DelegadoService {
+  private urlEndPoint: string = 'http://localhost:3000/delegados';
   private httpHeaders: HttpHeaders = new HttpHeaders({
-    'Content-Type': 'application/json',})
-  constructor(private http: HttpClient, private router: Router) { 
+    'Content-Type': 'application/json',
+  })
+  constructor(private http: HttpClient, private router: Router) { }
 
-    
-  }
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
@@ -33,19 +33,19 @@ export class Formato2Service {
       'algo salio mal ;', error.error.mensaje);
   };
   
-    getFormato2s(): Observable<Formato2[]> {
-      // return of(Formato2S);
-      return this.http.get<Formato2[]>(this.urlEndPoint);
+    getDelegados(): Observable<Delegado[]> {
+      // return of(DelegadoS);
+      return this.http.get<Delegado[]>(this.urlEndPoint);
     }
   
-    create(Formato2: Formato2): Observable<Formato2> {
-      return this.http.post<Formato2>(this.urlEndPoint, Formato2, {headers: this.httpHeaders}).pipe(
+    create(Delegado: Delegado): Observable<Delegado> {
+      return this.http.post<Delegado>(this.urlEndPoint, Delegado, {headers: this.httpHeaders}).pipe(
         catchError( e => {
   
           if(e.status === 400){
             this.handleError(e);
           }
-          
+  
           Swal.fire({
             position: 'center',
             icon: 'error',
@@ -58,9 +58,9 @@ export class Formato2Service {
       );
     }
   
-    delete(id: number): Observable<Formato2> {
+    delete(id: number): Observable<Delegado> {
       const url = `${this.urlEndPoint}/${id}`;
-      return this.http.delete<Formato2>(url, {headers: this.httpHeaders}).pipe(
+      return this.http.delete<Delegado>(url, {headers: this.httpHeaders}).pipe(
         catchError( e => {
           Swal.fire({
             position: 'center',
@@ -74,9 +74,9 @@ export class Formato2Service {
       );
     }
   
-    get(id: number): Observable<Formato2> {
+    get(id: number): Observable<Delegado> {
       const url = `${this.urlEndPoint}/${id}`;
-      return this.http.get<Formato2>(url, {headers: this.httpHeaders}).pipe(
+      return this.http.get<Delegado>(url, {headers: this.httpHeaders}).pipe(
         catchError(e => {
           Swal.fire({
             position: 'center',
@@ -85,15 +85,15 @@ export class Formato2Service {
             text: e.error.mensaje,
             showConfirmButton: true,
           });
-          this.router.navigate(['Formato2s'])
+          this.router.navigate(['Delegados'])
           return this.handleError(e);
         })
       );
     }
   
-    save(id: number, Formato2: Formato2): Observable<Formato2>{
+    save(id: number, Delegado: Delegado): Observable<Delegado>{
       const url = `${this.urlEndPoint}/${id}`;
-      return this.http.put<Formato2>(url, Formato2, {headers: this.httpHeaders}).pipe(
+      return this.http.put<Delegado>(url, Delegado, {headers: this.httpHeaders}).pipe(
         catchError( e => {
           if(e.status === 400){
             this.handleError(e);
@@ -109,4 +109,5 @@ export class Formato2Service {
         })
       );
     }
+  
 }

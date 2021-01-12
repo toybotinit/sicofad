@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { LocalDataSource } from 'ng2-smart-table';
+import { Formato2 } from 'src/app/shared/formato2';
 
 @Component({
   selector: 'app-informe-fin-de-ciclo',
@@ -10,6 +12,59 @@ export class InformeFinDeCicloComponent implements OnInit {
 
   Formato5Form: FormGroup;
   fechaActual: number = Date.now();
+  formato5: Formato2;
+
+  source: LocalDataSource;
+
+  today: number = Date.now();
+  settings = {
+    actions: {
+      add: false,
+      edit: false,
+      delete: false,
+    },
+    hideSubHeader: false,
+    columns: {
+      codigo: {
+        title: 'Codigo',
+        type: 'number',
+        editable: false,
+        addable: false,
+      },
+      Curso: {
+        title: 'Curso',
+        type: 'string',
+        editable: false,
+        addable: false,
+      },
+      Grupo: {
+        title: 'Grupo',
+        type: 'string',
+        editable: false,
+        addable: false,
+      },
+      Tipo: {
+        title: 'Tipo',
+        type: 'string',
+        editable: false,
+        addable: false,
+      },
+      Docente: {
+        title: 'Docente',
+        type: 'number',
+        editable: false,
+        addable: false,
+      },
+      Fecha: {
+        title: 'Fecha',
+        type: 'string',
+        editable: false,
+        addable: false,
+      },
+    },
+
+    noDataMessage: 'No se encontraron datos',
+  };
   constructor() { }
   ngOnInit(): void {
     this.Formato5Form = new FormGroup({
@@ -37,7 +92,7 @@ export class InformeFinDeCicloComponent implements OnInit {
         Validators.email,
       ]),
       numeroDocente: new FormControl([
-        Validators.pattern('[1-9]{7} || 9[1-9]{8}'),
+        Validators.pattern('[1-9]{7}|^9[1-9]{8}'),
       ]),
       porcentajeSilabo: new FormControl(' ', [
         Validators.required,
@@ -85,8 +140,8 @@ export class InformeFinDeCicloComponent implements OnInit {
         Validators.max(20),
         Validators.min(0),
       ]),
-      nivel: new FormControl(),
-      asistencia: new FormControl(),
+      nivel: new FormControl('',[Validators.required,]),
+      asistencia: new FormControl('', [Validators.required]),
       silabo: new FormControl(),
       aulaVirtual: new FormControl(),
       administrativas: new FormControl(),
@@ -103,7 +158,7 @@ export class InformeFinDeCicloComponent implements OnInit {
   }
   options = [
     { value: 'Básico', label: 'Básico' },
-    { value: 'Medio', label: 'Intermedio'},
+    { value: 'Medio', label: 'Medio'},
     { value: 'Alto', label: 'Alto' },
     { value: 'Avanzado', label: 'Avanzado'},
   ];
@@ -126,6 +181,8 @@ export class InformeFinDeCicloComponent implements OnInit {
   get notaAlta() { return this.Formato5Form.get('notaAlta');}
   get notaBaja() { return this.Formato5Form.get('notaBaja');}
   get notaPromedio() { return this.Formato5Form.get('notaPromedio');}
+  get asistencia() { return this.Formato5Form.get('asistencia');}
+  get nivel() { return this.Formato5Form.get('nivel');}
   get status() {
     if (this.porcentajeSilabo.value <= 25 && this.porcentajeSilabo.value >= 1) {
       return 'danger';
@@ -140,6 +197,7 @@ export class InformeFinDeCicloComponent implements OnInit {
     }
   }
 get promedio(){
+  this.notaPromedio.setValue((this.notaAlta.value + this.notaBaja.value)/2);
   return (this.notaAlta.value + this.notaBaja.value)/2
 }
 

@@ -2,10 +2,14 @@
     <nb-card-body>
         <nb-tabset>
             <nb-tab tabTitle="Informes" tabIcon="folder-outline" responsive>
-                
+                <div>
+                    <ng2-smart-table [settings]="settings" [source]="source">
+                    </ng2-smart-table>
+                </div>
             </nb-tab>
 
-            <nb-tab tabTitle="Informe" tabIcon="file-text-outline" responsive>
+            <nb-tab tabTitle="Informe" tabIcon="file-text-outline" active responsive>
+                <p>{{Formato5Form.value | json }} {{Formato5Form.status | json }}</p>
                 <form (ngSubmit)="onSubmit()" [formGroup]="Formato5Form">
                     <nb-card>
                         <nb-card-header>Informe Final Del Curso</nb-card-header>
@@ -67,9 +71,9 @@
                                     <div class="form-control-group mt-3">
                                         <label for="tipo" class="label col-12">Tipo (Marcar recuadro)</label>
                                         <nb-select multiple placeholder="Tipo" formControlName="tipo">
-                                            <nb-option value="1">Teoría</nb-option>
-                                            <nb-option value="2">Práctica</nb-option>
-                                            <nb-option value="3">Laboratorio</nb-option>
+                                            <nb-option value="Teoria">Teoría</nb-option>
+                                            <nb-option value="Practica">Práctica</nb-option>
+                                            <nb-option value="Laboratorio">Laboratorio</nb-option>
                                         </nb-select>
                                         <ng-container *ngIf="tipo.invalid && tipo.touched">
                                             <p class="caption status-danger" *ngIf="tipo.errors?.required">
@@ -362,68 +366,97 @@
                             <div class="row">
                                 <div class="col-12 mt-3">
                                     <div class="form-control-group">
-                                        <label for="nivelAcademico" class="label col-12">Nivel Académico de los alumnos: </label>
-                                       
-                                            <div class="row justify-content-around">
-                                                <div class="col-12 col-sm-6 mt-2">
-                                                    <nb-radio-group id="nivelAcademico">
+                                        <label for="nivelAcademico" class="label col-12">Nivel Académico de los alumnos:
+                                        </label>
+
+                                        <div class="row justify-content-around">
+                                            <div class="col-12 col-sm-6 mt-2">
+                                                <nb-radio-group id="nivelAcademico">
                                                     <nb-radio value="Básico">Básico</nb-radio>
                                                     <nb-radio value="Medio">Medio</nb-radio>
-                                                    </nb-radio-group>
-                                                </div>
-                                                <div class="col-12 col-sm-6 mt-2">
-                                                    <nb-radio-group  id="nivelAcademico">
+                                                </nb-radio-group>
+                                            </div>
+                                            <div class="col-12 col-sm-6 mt-2">
+                                                <nb-radio-group id="nivelAcademico">
                                                     <nb-radio value="Alto">Alto</nb-radio>
                                                     <nb-radio value="Avanzado">Avanzado</nb-radio>
                                                 </nb-radio-group>
-                                                </div>
                                             </div>
-                                        <textarea nbInput fullWidth class="mt-2" id="nivelAcademico" formControlName="nivel" placeholder="Comentario sobre el nivel Académico de los alumnos: incluya conocimientos previos, interés en el curso, estilos de aprendizaje."></textarea>
+                                        </div>
+                                        <textarea nbInput fullWidth class="mt-2" id="nivelAcademico"
+                                            formControlName="nivel"
+                                            placeholder="Comentario sobre el nivel Académico de los alumnos: incluya conocimientos previos, interés en el curso, estilos de aprendizaje."></textarea>
+                                            <ng-container *ngIf="nivel.invalid && nivel.touched">
+                                                <p class="caption status-danger" *ngIf="nivel.errors?.required">
+                                                    comentario sobre el nivel Académico requerido
+                                                </p>
+                                            </ng-container>
                                     </div>
                                     <div class="form-control-group mt-3">
                                         <label for="asistencia" class="label col-12">Asistencia y puntualidad:
                                         </label>
-                                        <textarea nbInput fullWidth id="asistencia" formControlName="asistencia" placeholder="Comentario sobre la asistencia de los alumnos ."></textarea>
+                                            <textarea nbInput fullWidth id="asistencia" formControlName="asistencia"
+                                                placeholder="Comentario sobre la asistencia de los alumnos ."></textarea>
+                                        <ng-container *ngIf="asistencia.invalid && asistencia.touched">
+                                            <p class="caption status-danger" *ngIf="asistencia.errors?.required">
+                                                comentario sobre la asistencia requerida
+                                            </p>
+                                        </ng-container>
                                     </div>
                                     <div class="form-control-group mt-3">
                                         <label for="silabo" class="label col-12">Del sílabo:
                                         </label>
-                                        <textarea nbInput fullWidth id="silabo" formControlName="silabo" placeholder="Qué temas del sílabo no se han completado? Considera todos los temas adecuados? Qué temas requieren más tiempo de dedicación?."></textarea>
+                                        <textarea nbInput fullWidth id="silabo" formControlName="silabo"
+                                            placeholder="Qué temas del sílabo no se han completado? Considera todos los temas adecuados? Qué temas requieren más tiempo de dedicación?."></textarea>
                                     </div>
                                     <div class="form-control-group mt-3">
                                         <label for="aulaVirtual" class="label col-12">Uso del Aula Virtual:
                                         </label>
-                                        <textarea nbInput fullWidth id="aulaVirtual" formControlName="aulaVirtual" placeholder="Información colocada, uso de foros, chat y cantidad de visitas estudiantiles.."></textarea>
+                                        <textarea nbInput fullWidth id="aulaVirtual" formControlName="aulaVirtual"
+                                            placeholder="Información colocada, uso de foros, chat y cantidad de visitas estudiantiles.."></textarea>
                                     </div>
                                     <div class="form-control-group mt-3">
                                         <label for="administrativas" class="label col-12">Administrativas:
                                         </label>
-                                        <textarea nbInput fullWidth id="administrativas" formControlName="administrativas" placeholder="Disponibilidad de recursos (Plataformas virtuales)."></textarea>
+                                        <textarea nbInput fullWidth id="administrativas"
+                                            formControlName="administrativas"
+                                            placeholder="Disponibilidad de recursos (Plataformas virtuales)."></textarea>
                                     </div>
                                     <div class="form-control-group mt-3">
                                         <label for="silaboCompetencias" class="label col-12">Sílabo por competencias:
                                         </label>
-                                        <textarea nbInput fullWidth id="silaboCompetencias" formControlName="silaboCompetencias" placeholder="Qué actividades realizó usted para la evaluación del cumplimiento de las competencias de su curso, por los estudiantes? Podría presentar una propuesta de evaluación de las competencias de su curso?"></textarea>
+                                        <textarea nbInput fullWidth id="silaboCompetencias"
+                                            formControlName="silaboCompetencias"
+                                            placeholder="Qué actividades realizó usted para la evaluación del cumplimiento de las competencias de su curso, por los estudiantes? Podría presentar una propuesta de evaluación de las competencias de su curso?"></textarea>
                                     </div>
                                     <div class="form-control-group mt-3">
                                         <label for="mejoraContinua" class="label col-12">Mejora continua:
                                         </label>
-                                        <textarea nbInput fullWidth id="mejoraContinua" formControlName="mejoraContinua" placeholder="Qué actividades de mejora continua ha realizado en el curso en este ciclo y cuáles propone para el siguiente, para mejorar el rendimiento académico del estudiante."></textarea>
+                                        <textarea nbInput fullWidth id="mejoraContinua" formControlName="mejoraContinua"
+                                            placeholder="Qué actividades de mejora continua ha realizado en el curso en este ciclo y cuáles propone para el siguiente, para mejorar el rendimiento académico del estudiante."></textarea>
                                     </div>
                                     <div class="form-control-group mt-3">
-                                        <label for="investigacionFormativa" class="label col-12">Investigación formativa:
+                                        <label for="investigacionFormativa" class="label col-12">Investigación
+                                            formativa:
                                         </label>
-                                        <textarea nbInput fullWidth id="investigacionFormativa" formControlName="investigacionFormativa" placeholder="Qué actividades de investigación formativa desarrolla con sus estudiantes"></textarea>
+                                        <textarea nbInput fullWidth id="investigacionFormativa"
+                                            formControlName="investigacionFormativa"
+                                            placeholder="Qué actividades de investigación formativa desarrolla con sus estudiantes"></textarea>
                                     </div>
                                     <div class="form-control-group mt-3">
                                         <label for="actualizacionDocente" class="label col-12">Actualización docente:
                                         </label>
-                                        <textarea nbInput fullWidth id="actualizacionDocente" formControlName="actualizacionDocente" placeholder="Ha seguido usted algún curso de actualización profesional o docente en los últimos dos años. Indique tema del curso y duración."></textarea>
+                                        <textarea nbInput fullWidth id="actualizacionDocente"
+                                            formControlName="actualizacionDocente"
+                                            placeholder="Ha seguido usted algún curso de actualización profesional o docente en los últimos dos años. Indique tema del curso y duración."></textarea>
                                     </div>
                                     <div class="form-control-group mt-3">
-                                        <label for="comentariosYrecomendaciones" class="label col-12">Comentarios y recomendaciones:
+                                        <label for="comentariosYrecomendaciones" class="label col-12">Comentarios y
+                                            recomendaciones:
                                         </label>
-                                        <textarea nbInput fullWidth id="comentariosYrecomendaciones" formControlName="comentariosYrecomendaciones" placeholder="Serán útiles para mejorar el Plan de Estudios y los servicios que brinda la Escuela de Ingeniería de Sistemas y sobre el uso de las herramientas virtuales que proporciona la Facultad.."></textarea>
+                                        <textarea nbInput fullWidth id="comentariosYrecomendaciones"
+                                            formControlName="comentariosYrecomendaciones"
+                                            placeholder="Serán útiles para mejorar el Plan de Estudios y los servicios que brinda la Escuela de Ingeniería de Sistemas y sobre el uso de las herramientas virtuales que proporciona la Facultad.."></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -435,10 +468,11 @@
                         </nb-card-header>
                         <nb-card-body>
                             <address>
-                                Enviar este informe completo y firmado a la Dirección de Escuela de Ingeniería de Sistemas al siguiente correo:
+                                Enviar este informe completo y firmado a la Dirección de Escuela de Ingeniería de
+                                Sistemas al siguiente correo:
                                 <a href="eapis.fisi@unmsm.edu.pe">eapis.fisi@unmsm.edu.pe</a>.<br>
                                 Ciudad Universitaria - Av. Germán Amézaga<br>
-                                </address>
+                            </address>
                         </nb-card-body>
                     </nb-card>
                     <nb-card>
@@ -446,7 +480,7 @@
                             Firma
                         </nb-card-header>
                         <nb-card-body>
-                           <div class="row justify-content-around">
+                            <div class="row justify-content-around">
                                 <div class="col-12 col-sm-4">
                                     <label class="label">Firma del profesor:</label>
                                     <br>
@@ -460,7 +494,8 @@
                                     <p>{{fechaActual | date:'dd/MM/yyyy'}}</p>
                                 </div>
                                 <div class="col-12 col-sm-3">
-                                   <img src="../../../../assets/imgs/sello.png" alt="sello de la Universidad Nacional Mayor de San Marcos">
+                                    <img src="../../../../assets/imgs/sello.png"
+                                        alt="sello de la Universidad Nacional Mayor de San Marcos">
                                 </div>
                             </div>
                         </nb-card-body>

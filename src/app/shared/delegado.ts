@@ -1,8 +1,8 @@
 export class Delegado {
-    codigo: number;
-    nombre: string;
-    email: string;
-    telefono: number;
-    celular: number;
-    direccion: string;
+    p_nombre: string;
+    p_codigo: number;
+    p_email: string;
+    p_telefono: number;
+    p_celular: number;
+    p_direccion: string;
 }
