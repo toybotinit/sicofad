@@ -1,6 +1,7 @@
 
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NbComponentStatus, NbGlobalPhysicalPosition, NbGlobalPosition, NbToastrService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
 import { Formato2Service } from 'src/app/services/formato2.service';
 import { Curso } from 'src/app/shared/curso';
@@ -21,6 +22,15 @@ export class DelegadosComponent implements OnInit {
   formato2table = new Array();
   today: number = Date.now();
   curso: Curso;
+  destroyByClick = true;
+  duration = 2500;
+  hasIcon = true;
+  position: NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;
+  preventDuplicates = false;
+  status: NbComponentStatus = 'success';
+
+  title = 'guardado';
+  content = `Se ha guardado con éxito`;
   settings = {
     actions: {
       add: false,
@@ -77,7 +87,7 @@ export class DelegadosComponent implements OnInit {
   };
   Formato2Form: FormGroup;
   fechaActual: number = Date.now();
-  constructor(private formato2Service: Formato2Service) {
+  constructor(private formato2Service: Formato2Service, private toastrService: NbToastrService) {
 
   }
 
@@ -168,6 +178,22 @@ export class DelegadosComponent implements OnInit {
 
   }
 
+  private showToast(type: NbComponentStatus, title: string, body: string) {
+    const config = {
+      status: type,
+      destroyByClick: this.destroyByClick,
+      duration: this.duration,
+      hasIcon: this.hasIcon,
+      position: this.position,
+      preventDuplicates: this.preventDuplicates,
+    };
+    const titleContent = title ? `. ${title}` : '';
+  
+    this.toastrService.show(
+      body,
+      `formato ${titleContent}`,
+      config);
+  }
 
   onSubmit(): void {
     var formato:Formato2 ={
@@ -195,7 +221,7 @@ export class DelegadosComponent implements OnInit {
     };
     this.formato2Service.create(formato).subscribe(
       (formato2) => {
-        console.log(formato)
+        console.log(formato2)
         var formato = new Object({
           "cod_curso": formato2.cod_curso,
           "num_grupo": formato2.num_grupo,
@@ -209,7 +235,9 @@ export class DelegadosComponent implements OnInit {
         this.source.add(formato);
         this.nuevoFormato=true;
       });
+      this.showToast(this.status, this.title, this.content);
   }
+
 
   changeTab():void {
     var formato;

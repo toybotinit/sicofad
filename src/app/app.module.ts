@@ -6,7 +6,7 @@ import { NbPasswordAuthStrategy, NbAuthModule, NbAuthJWTToken } from '@nebular/a
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NbThemeModule, NbLayoutModule, NbIconModule, NbMenuModule, NbSidebarModule } from '@nebular/theme';
+import { NbThemeModule, NbLayoutModule, NbIconModule, NbMenuModule, NbSidebarModule, NbToastrModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { AppRoutingModule } from './app-routing.module';
 import {SifoCadAuthModule} from './auth/auth.module';
@@ -40,6 +40,7 @@ const formSetting: any = {
     Ng2CompleterModule,
     NbMenuModule.forRoot(),
     NbSidebarModule.forRoot(),
+    NbToastrModule.forRoot(),
     NbAuthModule.forRoot({
       strategies: [
         NbPasswordAuthStrategy.setup({

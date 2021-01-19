@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NbComponentStatus, NbGlobalPhysicalPosition, NbGlobalPosition, NbToastrService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
 import { Formato5Service } from 'src/app/services/formato5.service';
 import { Formato5 } from 'src/app/shared/Formato5';
@@ -18,6 +19,15 @@ export class InformeFinDeCicloComponent implements OnInit {
   source: LocalDataSource;
   nuevoFormato: boolean;
   today: number = Date.now();
+  destroyByClick = true;
+  duration = 2500;
+  hasIcon = true;
+  position: NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;
+  preventDuplicates = false;
+  estado: NbComponentStatus = 'success';
+
+  title = 'guardado';
+  content = `Se ha guardado con éxito`;
   settings = {
     actions: {
       add: false,
@@ -66,7 +76,7 @@ export class InformeFinDeCicloComponent implements OnInit {
 
     noDataMessage: 'No se encontraron datos',
   };
-  constructor(private formato5Service: Formato5Service) { }
+  constructor(private formato5Service: Formato5Service, private toastrService: NbToastrService) { }
   ngOnInit(): void {
     this.Formato5Form = new FormGroup({
       codigoCurso: new FormControl('', [
@@ -200,14 +210,115 @@ export class InformeFinDeCicloComponent implements OnInit {
       });
   }
 
+  private showToast(type: NbComponentStatus, title: string, body: string) {
+    const config = {
+      status: type,
+      destroyByClick: this.destroyByClick,
+      duration: this.duration,
+      hasIcon: this.hasIcon,
+      position: this.position,
+      preventDuplicates: this.preventDuplicates,
+    };
+    const titleContent = title ? `. ${title}` : '';
+  
+    this.toastrService.show(
+      body,
+      `formato ${titleContent}`,
+      config);
+  }
+
   onSubmit():void{
 
     this.Formato5Form.get('tipo').value;
-    var tipo = {
-      "teoria": this.Formato5Form.get('tipo').value[0] == "Teoria" ? true: false,
-      "practica" :  this.Formato5Form.get('tipo').value[1]== "Practica" ? true: false,
-      "laboratorio" :  this.Formato5Form.get('tipo').value[2]== "Laboratorio" ? true: false,
+    console.log(this.Formato5Form.get('tipo').value);
+    var teoria = false; 
+    var practica = false;
+    var laboratorio = false; 
+
+    if(this.Formato5Form.get('tipo').value.length == 1){
+      if(this.Formato5Form.get('tipo').value[0] === "Practica"){
+        practica = true;
+      }
+      else if(this.Formato5Form.get('tipo').value[0] === "Teoria"){
+        teoria = true;
+      }
+      else if(this.Formato5Form.get('tipo').value[0] === "Laboratorio"){
+        laboratorio = true;
+      }
     }
+    else if(this.Formato5Form.get('tipo').value.length == 2){
+      if(this.Formato5Form.get('tipo').value[0] === "Teoria"){
+        teoria = true;
+        if(this.Formato5Form.get('tipo').value[1] === "Practica")
+        practica = true;
+        else if(this.Formato5Form.get('tipo').value[1] === "Laboratorio")
+        laboratorio = true;
+      }
+      else if(this.Formato5Form.get('tipo').value[0] === "Practica"){
+        practica = true;
+        if(this.Formato5Form.get('tipo').value[1] === "Teoria")
+          teoria = true;
+        else if(this.Formato5Form.get('tipo').value[1] === "Laboratorio")
+          laboratorio = true;
+      }
+      else if(this.Formato5Form.get('tipo').value[0] === "Laboratorio"){
+        laboratorio = true;
+        if(this.Formato5Form.get('tipo').value[1] === "Teoria")
+          teoria = true;
+        else if(this.Formato5Form.get('tipo').value[1] === "Practica")
+          practica = true;
+      }
+    }
+    else if(this.Formato5Form.get('tipo').value.length == 3){
+      if(this.Formato5Form.get('tipo').value[0] === "Teoria"){
+        teoria = true;
+        if(this.Formato5Form.get('tipo').value[1] === "Practica"){
+          practica = true;
+          if(this.Formato5Form.get('tipo').value[2] === "Laboratorio")
+            laboratorio = true;
+        }
+        else if(this.Formato5Form.get('tipo').value[1] === "Laboratorio"){
+          laboratorio = true;
+          if(this.Formato5Form.get('tipo').value[2] === "Practica")
+              practica = true;
+        }
+
+      }
+      else if(this.Formato5Form.get('tipo').value[0] === "Practica"){
+        practica = true;
+        if(this.Formato5Form.get('tipo').value[1] === "Teoria"){
+          teoria = true;
+          if(this.Formato5Form.get('tipo').value[2] === "Laboratorio"){
+            laboratorio = true;
+          }
+        }
+        else if(this.Formato5Form.get('tipo').value[1] === "Laboratorio")
+          laboratorio = true;
+          if(this.Formato5Form.get('tipo').value[2] === "Teoria")
+            teoria = true;
+      }
+      else if(this.Formato5Form.get('tipo').value[0] === "Laboratorio"){
+        laboratorio = true;
+        if(this.Formato5Form.get('tipo').value[1] === "Teoria"){
+          teoria = true;
+          if(this.Formato5Form.get('tipo').value[2] === "Practica")
+          practica = true;
+        }
+        else if(this.Formato5Form.get('tipo').value[1] === "Practica"){
+          practica = true;
+          if(this.Formato5Form.get('tipo').value[2] === "Teoria")
+            teoria = true;
+        }
+      }
+    }
+    
+
+    var tipo = {
+      "teoria": teoria,
+      "practica" :  practica,
+      "laboratorio" :  laboratorio,
+    }
+    console.log(tipo);
     var formato:Formato5 ={
       "cod_curso": this.Formato5Form.get('codigoCurso').value,
       "nom_curso": this.Formato5Form.get('nombreCurso').value,
@@ -283,6 +394,7 @@ export class InformeFinDeCicloComponent implements OnInit {
         this.source.add(formato);
         this.nuevoFormato=true;
       }); 
+      this.showToast(this.estado, this.title, this.content); 
   }
 
   changeTab():void {
