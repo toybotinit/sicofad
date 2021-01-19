@@ -395,6 +395,7 @@ export class InformeFinDeCicloComponent implements OnInit {
         this.nuevoFormato=true;
       }); 
       this.showToast(this.estado, this.title, this.content); 
+      this.Formato5Form.reset();
   }
 
   changeTab():void {

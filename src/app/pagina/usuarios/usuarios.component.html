@@ -35,7 +35,7 @@
                             <div class="form-control-group">
                                 <label for="password" class="label col-12">Contraseña:</label>
                                 <input type="password" nbInput medium id="password" name="password"
-                                    formControlName="password" placeholder="Contraseña del profesor"
+                                    formControlName="password" placeholder="Contraseña"
                                     [status]="password.dirty ? (password.invalid ? 'danger' : 'success') : 'basic'"
                                     [attr.aria-invalid]="password.invalid && password.touched ? true : null"
                                     >
@@ -48,10 +48,10 @@
                             <div class="form-control-group">
                                 <label for="rol" class="label col-12">Rol: </label>
                                 <nb-select placeholder="Rol" [formControl]="rol">
-                                    <nb-option value="1"> 1</nb-option>
-                                    <nb-option value="2"> 2</nb-option>
-                                    <nb-option value="3"> 3</nb-option>
-                                    <nb-option value="4"> 4</nb-option>
+                                    <nb-option value="1"> Profesor</nb-option>
+                                    <nb-option value="2"> Secretaria</nb-option>
+                                    <nb-option value="3"> Director</nb-option>
+                                    <nb-option value="4"> Otro</nb-option>
                                   </nb-select>
                                 <ng-container *ngIf="rol.invalid && rol.touched">
                                     <p class="caption status-danger" *ngIf="rol.errors?.required">

@@ -14,6 +14,7 @@ export class UsuariosComponent implements OnInit {
   source: LocalDataSource;
   UsuarioForm: FormGroup;
   usuarios: Usuario[];
+  users = new Array();
   destroyByClick = true;
   duration = 2500;
   hasIcon = true;
@@ -69,12 +70,28 @@ export class UsuariosComponent implements OnInit {
         Validators.required,
       ]),
     });
-
+  
     this.usuarioService.getUsuarios()
       .subscribe((usuarios) => {
+        var user ={};
         this.usuarios = usuarios;
         console.log(this.usuarios)
-        this.source = new LocalDataSource(this.usuarios);
+        this.usuarios.forEach(usuario => {
+          if(usuario.rol == 1){
+            user = {user: usuario.user, pass: usuario.pass, rol: "Profesor"};
+          }
+          else if(usuario.rol == 2){
+            user = {user: usuario.user, pass: usuario.pass, rol: "Secretaria"};
+          }
+          else if(usuario.rol == 3){
+            user = {user: usuario.user, pass: usuario.pass, rol: "Director"};
+          }
+          else if(usuario.rol == 4){
+            user = {user: usuario.user, pass: usuario.pass, rol: "Otro"};
+          }
+         this.users.push(user);
+        })
+        this.source = new LocalDataSource(this.users);
       });
     
   }
@@ -95,20 +112,54 @@ export class UsuariosComponent implements OnInit {
       config);
   }
   onSubmit():void{
-    var user = {
+    var u; 
+    var us = {
       "user": this.UsuarioForm.get('usuario').value,
       "pass": this.UsuarioForm.get('password').value,
       "rol": this.UsuarioForm.get('rol').value,
     }
-    this.usuarioService.create(user).subscribe(
-      (usuario) =>  {this.source.add(usuario); this.usuarios.push(usuario)});
+    this.usuarioService.create(us).subscribe(
+      (usuario) =>  {
+        if(usuario.rol == 1){
+          u = {user: usuario.user, pass: usuario.pass, rol: "Profesor"};
+        }
+        else if(usuario.rol == 2){
+          u = {user: usuario.user, pass: usuario.pass, rol: "Secretaria"};
+        }
+        else if(usuario.rol == 3){
+          u = {user: usuario.user, pass: usuario.pass, rol: "Director"};
+        }
+        else if(usuario.rol == 4){
+          u = {user: usuario.user, pass: usuario.pass, rol: "Otro"};
+        }
+        this.users.push(u);
+        this.usuarios.push(usuario);
+        this.source.add(u);}
+        );
     this.showToast(this.status, this.title, this.content); 
+    this.UsuarioForm.reset();
   }
   changeTab():void {
+    var user;
     this.usuarioService.getUsuarios()
       .subscribe((usuarios) => {
         this.usuarios = usuarios;
-        this.source.load(this.usuarios);
+        this.usuarios.forEach(usuario => {
+          if(usuario.rol == 1){
+            user = {user: usuario.user, pass: usuario.pass, rol: "Profesor"};
+          }
+          else if(usuario.rol == 2){
+            user = {user: usuario.user, pass: usuario.pass, rol: "Secretaria"};
+          }
+          else if(usuario.rol == 3){
+            user = {user: usuario.user, pass: usuario.pass, rol: "Director"};
+          }
+          else if(usuario.rol == 4){
+            user = {user: usuario.user, pass: usuario.pass, rol: "Otro"};
+          }
+         this.users.push(user);
+        })
+        this.source.load(this.users);
       });
   }
 

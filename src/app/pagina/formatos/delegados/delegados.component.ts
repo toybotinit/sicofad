@@ -236,6 +236,7 @@ export class DelegadosComponent implements OnInit {
         this.nuevoFormato=true;
       });
       this.showToast(this.status, this.title, this.content);
+      this.Formato2Form.reset();
   }
 
 
